@@ -65,20 +65,7 @@ CYAN='\[\e[0;36m\]'
 LIGHTGRAY='\[\e[0;37m\]'
 WHITE='\[\e[1;37m\]'
 
-# set the prompt to show current working directory and git branch name, if it exists
-
-# this prompt is a green username, black @ symbol, cyan host, magenta current working directory and white git branch (only shows if you're in a git branch)
-# unstaged and untracked symbols are shown, too (see above)
-# this prompt uses the short colour codes defined above
-#PS1='${GREEN}\u${BLACK}@${CYAN}\h:${MAGENTA}\w${WHITE}`__git_ps1 " (%s)"`\$ '
-#PS1='${CYAN}\u${WHITE}@${GREEN}\h:${MAGENTA}\w:\r\n${WHITE}`__git_ps1 "[%s]"`\$ '
-
-# this is a cyan username, @ symbol and host, magenta current working directory and white git branch
-# it uses the shorter , but visibly more complex, codes for text colours (shorter because the colour code definitions aren't needed)
-# PS1='\[\033[0;36m\]\u@\h\[\033[01m\]:\[\033[0;35m\]\w\[\033[00m\]\[\033[1;30m\]\[\033[0;37m\]`__git_ps1 " (%s)"`\[\033[00m\]\[\033[0;37m\]\$ '
-
-# return the prompt prefix for the second line
-
+# get branch info from GIT
 function set_git {
     BRANCH=`__git_ps1`
     ABRANCH=`__git_ps1 "%s"`
@@ -93,6 +80,7 @@ function set_git {
     fi
 }
 
+# create horizontal line that fills the middle of the terminal with dynamic width
 function horizline {
     TERMWIDTH=${COLUMNS}
     let promptsize=$(echo -n "-[\u]-[\h]-[${PWD}:]`set_git`-" | wc -c | tr -d " ")
@@ -106,25 +94,6 @@ function horizline {
     echo ${fill}
 }
 
-# and here's one similar to Paul Irish's famous prompt ... not sure if this is the way he does it, but it works  :)
-# \033[s = save cursor position
-# \033[u = restore cursor position
-
-#PS1='${MAGENTA}\u${WHITE} in ${GREEN}\w${WHITE}${MAGENTA}`__git_ps1 " on %s"`${WHITE}\r\n`set_prefix`${NORMAL}${CYAN}\033[s\033[60C (`date "+%a, %b %d"`)\033[u${WHITE} '
-#PS1='${CYAN}\u${WHITE}@${GREEN}\h:${MAGENTA}\w:\r\n${WHITE}`__git_ps1 "[%s]"``set_prefix`${NORMAL}\$ '
-#PS1='${CYAN}\u${WHITE}(${GREEN}\h${WHITE})${MAGENTA}\w:\r\n${WHITE}`set_prefix`${NORMAL}> '
-
-#this is the final good prompt:
-#PS1='${CYAN}\u${WHITE} (${YELLOW}\h${WHITE}) ${MAGENTA}\w: ${WHITE}`set_prefix`\r\n${NORMAL}\$ '
-#PS1="$WHITE-[$CYAN\u$WHITE]-[$YELLOW\h$WHITE]-[$MAGENTA\w:$WHITE]"'`horizline``set_git`'"$WHITE-\n$WHITE$ "
-
-#close to working final:
 PROMPT1="$DARKGRAY-[$LIGHTBLUE\u$DARKGRAY]-[$CYAN\h$DARKGRAY]-[$PURPLE\w:$DARKGRAY]"
 PROMPT2="$DARKGRAY]-"
 PS1="$PROMPT1"'`horizline`[`set_git`'"$PROMPT2\n-$LIGHTGRAY$ "
-
-
-
-#testing:
-#PS1='[\u][\h][\w]`horizline``set_prefix`\n${WHITE}$ '
-#PS1="$LIGHTBLUE[\u][\h][\w]`horizline``set_prefix`\n$ "
