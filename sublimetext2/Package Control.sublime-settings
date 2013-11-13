@@ -1,0 +1,23 @@
+{
+	"installed_packages":
+	[
+		"BracketHighlighter",
+		"Emmet",
+		"Git",
+		"GitGutter",
+		"HtmlTidy",
+		"Jade",
+		"Jasmine",
+		"jQuery Snippets pack",
+		"JsFormat",
+		"JSHint",
+		"Package Control",
+		"PhpTidy",
+		"Sass",
+		"Search Stack Overflow",
+		"SimpleClone",
+		"SublimeOnSaveBuild",
+		"Theme - Soda",
+		"TrailingSpaces"
+	]
+}

@@ -1,0 +1,15 @@
+[
+    // these are my CUSTOM key bindings:
+    { "keys": ["home"], "command": "move_to", "args": {"to": "bol"} },
+    { "keys": ["end"], "command": "move_to", "args": {"to": "eol"} },
+    { "keys": ["shift+end"], "command": "move_to", "args": {"to": "eol", "extend": true} },
+    { "keys": ["shift+home"], "command": "move_to", "args": {"to": "bol", "extend": true } },
+    { "keys": ["ctrl+home"], "command":"move_to","args": {"to":"bof"} },
+    { "keys": ["ctrl+end"], "command":"move_to","args": {"to":"eof"} },
+
+    // git specific shortcuts:
+    { "keys": ["ctrl+shift+d"], "command": "git_diff" },
+
+    //Trailing Spaces:
+    { "keys": ["ctrl+shift+ "], "command": "toggle_trailing_spaces" }
+]
