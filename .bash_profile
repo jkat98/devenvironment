@@ -2,28 +2,58 @@ source ~/.profile
 source ~/git-completion.bash
 source /opt/local/share/git-core/git-prompt.sh
 
+export GOPATH=$HOME/go
+export GOROOT=/usr/local/go
+export GOARCH=amd64
+export GOOS=darwin
+export GOBIN=$HOME/go/bin
+export PATH=$PATH:$GOBIN
+
+#selenium GUI testing
+
+
+
 #my aliases/shortcuts
-alias v-web='cd ~/git/puppet-vagrant; vagrant up v-web-public'
-alias v-cp='cd ~/git/puppet-vagrant; vagrant up v-web-controlpanel'
-alias v-ds='cd ~/git/puppet-vagrant; vagrant up v-datasource'
-alias v-lb='cd ~/git/puppet-vagrant; vagrant up v-web-loadbalancer'
-alias v-mem='cd ~/git/messageeditorapi; vagrant up me-mongo'
-alias v-mea='cd ~/git/messageeditorapi; vagrant up messageeditor-api'
-alias v-rlb='cd ~/git/puppet-vagrant; vagrant reload v-web-loadbalancer'
+alias v-web='vagrant up v-web-public --provision'
+alias v-cp='vagrant up v-web-controlpanel --provision'
+alias v-ds='vagrant up v-datasource'
+alias v-lb='vagrant up v-web-loadbalancer'
+alias me-api='bash ~/meapi.sh'
+alias me-up='bash ~/meup.sh'
 
-alias v-up='cd ~/git/puppet-vagrant; v-lb; v-ds; v-cp; v-web; cd ~/git/messageeditorapi; v-mem; v-mea;'
-alias v-sus='cd ~/git/puppet-vagrant; vagrant suspend;'
-alias v-res='cd ~git/puppet-vagrant; vagrant resume;'
+alias v-rlb='vagrant reload v-web-loadbalancer'
 
-alias gs='git status'
+alias v-up='v-lb; v-ds; v-cp; v-web;'
+alias v-sus='vagrant suspend;'
+alias v-res='vagrant resume;'
+
+alias gs='git status -sb'
 alias gcm='git checkout master'
+alias gf='git fetch'
+alias gp='git pull'
 alias c='clear'
 alias gb='git branch'
 alias gl='git l'
+alias gsu='git submodule update --recursive'
+alias gd='git diff'
+alias gnuke='git branch --merged | xargs git branch -d'
+alias gos='open https://github-enterprise.colo.lair'
+alias sites='cd ~/git/sites'
 
+alias dateR="python -c 'from email.Utils import formatdate; print formatdate(localtime=True)'"
+alias vtop="vtop --theme dark"
+
+alias ls='ls -aG'
 alias sls='clear; ls -aGl'
-LSCOLORS="DxGxFxdxCxdxdxhbadExEx"
+LSCOLORS="Exfxcxdxbxegedabagacad"
 export LSCOLORS
+
+alias ..='cd ..'
+
+alias g_sites='NODE_ENV=development-sites grunt server'
+
+paywhatevs=~/go/src/github.com/pietrojs/paywhatevs
+
 
 # enable git unstaged indicators - set to a non-empty value
 GIT_PS1_SHOWDIRTYSTATE="."
@@ -84,7 +114,7 @@ function set_git {
 function horizline {
     TERMWIDTH=${COLUMNS}
     let promptsize=$(echo -n "-[\u]-[\h]-[${PWD}:]`set_git`-" | wc -c | tr -d " ")
-    let fillsize=${TERMWIDTH}-${promptsize}+7
+    let fillsize=${TERMWIDTH}-${promptsize}+10
     fill=""
     while [ "$fillsize" -gt "0" ]
     do
@@ -94,6 +124,17 @@ function horizline {
     echo ${fill}
 }
 
-PROMPT1="$DARKGRAY-[$LIGHTBLUE\u$DARKGRAY]-[$CYAN\h$DARKGRAY]-[$PURPLE\w:$DARKGRAY]"
+PROMPT1="$DARKGRAY-[$GREEN\u$DARKGRAY:$CYAN\h$DARKGRAY]-[$PURPLE\w:$DARKGRAY]"
 PROMPT2="$DARKGRAY]-"
 PS1="$PROMPT1"'`horizline`[`set_git`'"$PROMPT2\n-$LIGHTGRAY$ "
+
+[ -s "/Users/jasonk/.nvm/nvm.sh" ] && . "/Users/jasonk/.nvm/nvm.sh" # This loads nvm
+
+# {{{
+# Node Completion - Auto-generated, do not touch.
+shopt -s progcomp
+for f in $(command ls ~/.node-completion); do
+  f="$HOME/.node-completion/$f"
+  test -f "$f" && . "$f"
+done
+# }}}
