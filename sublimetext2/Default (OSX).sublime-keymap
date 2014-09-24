@@ -10,6 +10,9 @@
     // git specific shortcuts:
     { "keys": ["ctrl+shift+d"], "command": "git_diff" },
 
+    { "keys": ["alt+super+up"], "command": "swap_line_up" },
+    { "keys": ["alt+super+down"], "command": "swap_line_down" },
+
     //Trailing Spaces:
     { "keys": ["ctrl+shift+ "], "command": "toggle_trailing_spaces" }
 ]
