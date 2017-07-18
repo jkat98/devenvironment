@@ -1,140 +1,105 @@
-source ~/.profile
-source ~/git-completion.bash
-source /opt/local/share/git-core/git-prompt.sh
+#!/usr/bin/env bash
+
+# Load RVM, if you are using it
+[[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
+
+# Add rvm gems and nginx to the path
+export PATH=$PATH:~/.gem/ruby/1.8/bin:/opt/nginx/sbin:~/git/code_swarm/bin:/Users/${USER}/Library/Android/sdk/platform-tools
+export DFHOME=/Users/jasonkrol/dfrepos
+
+export CODESWARM_DIR="/Users/jasonkrol/git/code_swarm"
+
+# Path to the bash it configuration
+export BASH_IT=$HOME/.bash_it
+
+# Lock and Load a custom theme file
+# location /.bash_it/themes/
+export BASH_IT_THEME='bobby'
+
+# Your place for hosting Git repos. I use this for private repos.
+export GIT_HOSTING='git@git.domain.com'
+
+# Set the path nginx
+export NGINX_PATH='/opt/nginx'
+
+# Don't check mail when opening terminal.
+unset MAILCHECK
+
+# Change this to your console based IRC client of choice.
+
+# Set this to the command you use for todo.txt-cli
+export TODO="t"
+
+# Set this to false to turn off version control status checking within the prompt for all themes
+export SCM_CHECK=true
 
 export GOPATH=$HOME/go
 export GOROOT=/usr/local/go
 export GOARCH=amd64
 export GOOS=darwin
 export GOBIN=$HOME/go/bin
+export PW_HOME=/Users/jasonkrol/go/src/github.com/pietrojs/paywhatevs
+export PW_ENV=dev
 export PATH=$PATH:$GOBIN
 
-#selenium GUI testing
-
-
-
-#my aliases/shortcuts
-alias v-web='vagrant up v-web-public --provision'
-alias v-cp='vagrant up v-web-controlpanel --provision'
-alias v-ds='vagrant up v-datasource'
-alias v-lb='vagrant up v-web-loadbalancer'
-alias me-api='bash ~/meapi.sh'
-alias me-up='bash ~/meup.sh'
-
-alias v-rlb='vagrant reload v-web-loadbalancer'
-
-alias v-up='v-lb; v-ds; v-cp; v-web;'
-alias v-sus='vagrant suspend;'
-alias v-res='vagrant resume;'
+alias vi='vim'
 
 alias gs='git status -sb'
 alias gcm='git checkout master'
+alias gc-='git checkout -'
 alias gf='git fetch'
 alias gp='git pull'
 alias c='clear'
 alias gb='git branch'
+alias gbr='git branch --sort committerdate'
 alias gl='git l'
 alias gsu='git submodule update --recursive'
 alias gd='git diff'
 alias gnuke='git branch --merged | xargs git branch -d'
-alias gos='open https://github-enterprise.colo.lair'
-alias sites='cd ~/git/sites'
+alias forcepull='git fetch ; git reset --hard @{u}'
+alias dfpr='open https://github.com/DramaFever/playstation/compare/$(git rev-parse --abbrev-ref HEAD)?expand=1'
+alias bowerflush='rm -rf bower_components && bower i'
+alias awsps='aws s3 ls s3://dramafever.static-dev/playstation/'
 
 alias dateR="python -c 'from email.Utils import formatdate; print formatdate(localtime=True)'"
 alias vtop="vtop --theme dark"
+alias localip="ifconfig | grep broadcast"
 
 alias ls='ls -aG'
-alias sls='clear; ls -aGl'
+alias l='clear; ls -aGl'
+
 LSCOLORS="Exfxcxdxbxegedabagacad"
 export LSCOLORS
 
 alias ..='cd ..'
 
-alias g_sites='NODE_ENV=development-sites grunt server'
+alias psqlup='postgres -D /usr/local/var/postgres'
 
 paywhatevs=~/go/src/github.com/pietrojs/paywhatevs
 
+alias keys='ssh-add -A'
 
-# enable git unstaged indicators - set to a non-empty value
-GIT_PS1_SHOWDIRTYSTATE="."
+# Set vcprompt executable path for scm advance info in prompt (demula theme)
+# https://github.com/xvzf/vcprompt
+#export VCPROMPT_EXECUTABLE=~/.vcprompt/bin/vcprompt
 
-# enable showing of untracked files - set to a non-empty value
-GIT_PS1_SHOWUNTRACKEDFILES=""
+# Load Bash It
+source $BASH_IT/bash_it.sh
 
-# enable stash checking - set to a non-empty value
-GIT_PS1_SHOWSTASHSTATE=""
 
-# enable showing of HEAD vs its upstream
-GIT_PS1_SHOWUPSTREAM=""
+#export DOCKER_HOST=tcp://192.168.59.107:2376
+#export DOCKER_TLS_VERIFY=1
+#export DOCKER_CERT_PATH=/Users/jasonkrol/.boot2docker/certs/boot2docker-vm
 
-# BLACK=$(tput setaf 0)
-# RED=$(tput setaf 1)
-# GREEN=$(tput setaf 2)
-# YELLOW=$(tput setaf 3)
-# LIME_YELLOW=$(tput setaf 190)
-# POWDER_BLUE=$(tput setaf 153)
-# BLUE=$(tput setaf 4)
-# MAGENTA=$(tput setaf 5)
-# CYAN=$(tput setaf 6)
-# WHITE=$(tput setaf 7)
-# NORMAL=$(tput sgr0)
-
-BLACK='\[\e[0;30m\]'
-DARKGRAY='\[\e[1;30m\]'
-RED='\[\e[0;31m\]'
-LIGHTRED='\[\e[1;31m\]'
-GREEN='\[\e[0;32m\]'
-LIGHTGREEN='\[\e[1;32m\]'
-BROWN='\[\e[0;33\]'
-YELLOW='\[\e[1;33\]'
-BLUE='\[\e[0;34m\]'
-LIGHTBLUE='\[\e[1;34m\]'
-PURPLE='\[\e[0;35m\]'
-LIGHTPURPLE='\[\e[1;35m\]'
-CYAN='\[\e[0;36m\]'
-LIGHTGRAY='\[\e[0;37m\]'
-WHITE='\[\e[1;37m\]'
-
-# get branch info from GIT
-function set_git {
-    BRANCH=`__git_ps1`
-    ABRANCH=`__git_ps1 "%s"`
-    if [[ -z $BRANCH ]]; then
-        echo "$(tput setaf 1)"
-    else
-        if [[ "$BRANCH" == *"*"* ]]; then
-            echo "$(tput setaf 1)${ABRANCH%%??}"
-        else
-            echo "$(tput setaf 2)${ABRANCH}"
-        fi
-    fi
+eval "$(docker-machine env dev)"
+function docker-start() {
+ docker-machine start dev
+ eval "$(docker-machine env dev)"
 }
 
-# create horizontal line that fills the middle of the terminal with dynamic width
-function horizline {
-    TERMWIDTH=${COLUMNS}
-    let promptsize=$(echo -n "-[\u]-[\h]-[${PWD}:]`set_git`-" | wc -c | tr -d " ")
-    let fillsize=${TERMWIDTH}-${promptsize}+10
-    fill=""
-    while [ "$fillsize" -gt "0" ]
-    do
-        fill="${fill}-"
-        let fillsize=${fillsize}-1
-    done
-    echo ${fill}
-}
+# The next line updates PATH for the Google Cloud SDK.
+source '/Users/jasonkrol/google-cloud-sdk/path.bash.inc'
 
-PROMPT1="$DARKGRAY-[$GREEN\u$DARKGRAY:$CYAN\h$DARKGRAY]-[$PURPLE\w:$DARKGRAY]"
-PROMPT2="$DARKGRAY]-"
-PS1="$PROMPT1"'`horizline`[`set_git`'"$PROMPT2\n-$LIGHTGRAY$ "
-
-[ -s "/Users/jasonk/.nvm/nvm.sh" ] && . "/Users/jasonk/.nvm/nvm.sh" # This loads nvm
-
-# {{{
-# Node Completion - Auto-generated, do not touch.
-shopt -s progcomp
-for f in $(command ls ~/.node-completion); do
-  f="$HOME/.node-completion/$f"
-  test -f "$f" && . "$f"
-done
-# }}}
+# The next line enables shell command completion for gcloud.
+source '/Users/jasonkrol/google-cloud-sdk/completion.bash.inc'
+eval "$(rbenv init -)"
